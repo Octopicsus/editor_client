@@ -7,7 +7,7 @@ import { Button } from "../valueButton/ValueButton.styled"
 
 
 export default observer(function Carousel({ id, index }) {
-  const carouselView = 220
+  const carouselView = 180
   const mainHeight = 60
 
   const isSelected = selectedStore.selected === index
@@ -72,7 +72,8 @@ export default observer(function Carousel({ id, index }) {
 
       <SubContainer $width={carouselView}>
         <TitleValue>{showTitle(count)}</TitleValue>
-        <BubbleContainer>
+
+        <BubbleContainer $isSelected={isSelected}>
           {options.map((option, optionIndex) => (
             <Bubble
               key={optionIndex}
@@ -81,6 +82,7 @@ export default observer(function Carousel({ id, index }) {
             />
           ))}
         </BubbleContainer>
+
       </SubContainer>
 
       <Button

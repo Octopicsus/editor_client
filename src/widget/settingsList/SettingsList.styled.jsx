@@ -23,12 +23,12 @@ background-color: rgba(0, 0, 0, 0.33);
 content: '';
 position: absolute;
 inset: 0;
-background: linear-gradient(0deg,rgba(252, 252, 252, 0.18) 1%, rgba(252, 252, 252, 0.04) 1%, rgba(252, 252, 252, 0.04) 20%, rgba(255, 255, 255, 0) 98%);
+background: linear-gradient(0deg,rgba(0, 0, 0, 0.13) 1%, rgba(0, 0, 0, 0.04) 1%, rgba(0, 0, 0, 0.04) 20%, rgba(0, 0, 0, 0) 98%);
 opacity: ${props => props.$isSelected ? 1 : 0};
 transition: opacity 0.3s ease;
 z-index: -1;
 pointer-events: none;
-border-radius: 4px;
+border: 1px solid rgba(252, 252, 252, 0.4);
 }
 `
 

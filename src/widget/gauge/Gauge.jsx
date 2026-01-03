@@ -6,7 +6,7 @@ import { Button } from "../valueButton/ValueButton.styled"
 import { useEffect, useState } from "react"
 
 export default observer(function Gauge({ id, index }) {
-    const barWidth = 220
+    const barWidth = 180
     const mainHeight = 60
     let fontSize = mainHeight / 3
 
@@ -92,9 +92,21 @@ export default observer(function Gauge({ id, index }) {
             </Button>
 
             <ProgressContainer>
-                <TitleValue $fontS={fontSize}>{count}</TitleValue>
-                <Bar $size={barWidth} $value={count} onPointerDown={handleDown} onPointerMove={handleMove} onPointerUp={handleUp}>
+                <TitleValue
+                    $fontS={fontSize}
+                    $size={barWidth}
+                >{count}</TitleValue>
+
+                <Bar
+                    $size={barWidth}
+                    $value={count}
+                    onPointerDown={handleDown}
+                    onPointerMove={handleMove}
+                    onPointerUp={handleUp}
+                    $isSelected={isSelected}
+                >
                 </Bar>
+
             </ProgressContainer>
 
             <Button

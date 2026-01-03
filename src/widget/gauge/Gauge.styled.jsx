@@ -6,6 +6,8 @@ height: 6px;
 background-color: #363636ff;
 position: relative;
 cursor: pointer;
+opacity: ${props => props.$isSelected ? 1 : 0};
+transition: 0.3s;
 
 &::before {
 content: "";
@@ -33,16 +35,15 @@ transition: all 0.3s;
 
 export const Container = styled.div`
 display: flex;
-gap: 10px
 `
 
 export const ProgressContainer = styled.div`
-display: flex;
-flex-direction: column;
 `
 
 export const TitleValue = styled.h3`
-margin: 0;
+margin-top: 16px;
+margin-bottom:3px;
+width: ${({ $size }) => `${$size}px`};
 pointer-events: none;
 font-size: 20px;
 z-index: 1;
