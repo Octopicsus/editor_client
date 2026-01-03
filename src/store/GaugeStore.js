@@ -3,36 +3,43 @@ import axios from "axios"
 import { API_PORT } from "../../config/port"
 
 class GaugeStore {
-    count = 0
+    valuesById = {}
 
     constructor() {
         makeAutoObservable(this)
-        this.getValue()
     }
 
-    setClampValue(value, min = 0, max = 100) {
-        this.count = Math.min(Math.max(value, min), max)
+    getCount(id) {
+        return this.valuesById[id]
     }
 
-    async getValue() {
+    setClampValue(id, value, min = 0, max = 100) {
+        const clamped = Math.min(Math.max(value, min), max)
+        this.valuesById[id] = clamped
+        return clamped
+    }
+
+    async getValue(id) {
         try {
-            const { data } = await axios.get(`http://localhost:${API_PORT}/api/valueGauge`)
+            const { data } = await axios.get(`http://localhost:${API_PORT}/api/valueGauge`, {
+                params: { id }
+            })
 
             runInAction(() => {
                 const startValue = data.value !== null ? data.value : data.defaultValue
-                this.setClampValue(startValue)
+                this.setClampValue(id, startValue)
             })
         } catch (error) {
             console.error('Loading Error', error)
         }
     }
 
-    async postValue(value) {
+    async postValue(id, value) {
         try {
-            const { data } = await axios.post(`http://localhost:${API_PORT}/api/valueGauge`, { value })
+            const { data } = await axios.post(`http://localhost:${API_PORT}/api/valueGauge`, { id, value })
 
             runInAction(() => {
-                this.setClampValue(data.value)
+                this.setClampValue(id, data.value)
             })
 
         } catch (error) {
@@ -40,23 +47,23 @@ class GaugeStore {
         }
     }
 
-    get canIncrement() {
-        return this.count < 100
+    canIncrement(id) {
+        return this.getCount(id) < 100
     }
 
-    get canDecrement() {
-        return this.count > 0
+    canDecrement(id) {
+        return this.getCount(id) > 0
     }
 
-    increment() {
-        if (this.canIncrement) {
-            this.count++
+    increment(id) {
+        if (this.canIncrement(id)) {
+            this.setClampValue(id, this.getCount(id) + 1)
         }
     }
 
-    decrement() {
-        if (this.canDecrement) {
-            this.count--
+    decrement(id) {
+        if (this.canDecrement(id)) {
+            this.setClampValue(id, this.getCount(id) - 1)
         }
     }
 }

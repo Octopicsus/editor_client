@@ -17,12 +17,13 @@ justify-content: space-between;
 align-items: center;
 width: 100%;
 padding: 12px;
+background-color: rgba(0, 0, 0, 0.33);
 
 &::before {
 content: '';
 position: absolute;
 inset: 0;
-background: linear-gradient(0deg,rgba(252, 252, 252, 0.08) 1%, rgba(252, 252, 252, 0.02) 1%, rgba(252, 252, 252, 0.02) 20%, rgba(255, 255, 255, 0) 98%);
+background: linear-gradient(0deg,rgba(252, 252, 252, 0.18) 1%, rgba(252, 252, 252, 0.04) 1%, rgba(252, 252, 252, 0.04) 20%, rgba(255, 255, 255, 0) 98%);
 opacity: ${props => props.$isSelected ? 1 : 0};
 transition: opacity 0.3s ease;
 z-index: -1;

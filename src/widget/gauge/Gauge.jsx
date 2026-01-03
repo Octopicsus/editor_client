@@ -3,19 +3,25 @@ import { selectedStore } from "../../store/SelectedStore"
 import { gaugeStore } from "../../store/GaugeStore"
 import { ProgressContainer, Bar, Container, TitleValue } from "./Gauge.styled"
 import { Button } from "../valueButton/ValueButton.styled"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 
-export default observer(function Gauge({index}) {
+export default observer(function Gauge({ id, index }) {
     const barWidth = 220
     const mainHeight = 60
-
     let fontSize = mainHeight / 3
 
     const [isDragging, setIsDragging] = useState(false)
+    const isSelected = selectedStore.selected === index
+    const count = gaugeStore.getCount(id)
 
+    useEffect(() => {
+        gaugeStore.getValue(id)
+    }, [id])
 
 
     const handleDown = (event) => {
+        if (!isSelected) return
+
         setIsDragging(true)
         if ("pointerId" in event) {
             event.currentTarget.setPointerCapture(event.pointerId)
@@ -29,29 +35,37 @@ export default observer(function Gauge({index}) {
     }
 
     const handleUp = (event) => {
+        if (!isSelected) return
+
         if ("pointerId" in event) {
             event.currentTarget.releasePointerCapture(event.pointerId)
         }
         setIsDragging(false)
-        gaugeStore.postValue(gaugeStore.count)
+        gaugeStore.postValue(id, gaugeStore.getCount(id))
     }
 
     const setCountbyPointer = (event) => {
+        if (!isSelected) return
+
         const x = event.clientX
         const rect = event.currentTarget.getBoundingClientRect()
 
         let position = Math.round(((x - rect.left) / barWidth) * 100)
-        position = gaugeStore.setClampValue(position)
+        gaugeStore.setClampValue(id, position)
     }
 
     const handleIncrement = () => {
-        gaugeStore.increment()
-        gaugeStore.postValue(gaugeStore.count)
+        if (!isSelected) return
+
+        gaugeStore.increment(id)
+        gaugeStore.postValue(id, gaugeStore.getCount(id))
     }
 
     const handleDecrement = () => {
-        gaugeStore.decrement()
-        gaugeStore.postValue(gaugeStore.count)
+        if (!isSelected) return
+
+        gaugeStore.decrement(id)
+        gaugeStore.postValue(id, gaugeStore.getCount(id))
     }
 
     const disabledButton = (value, side) => {
@@ -66,20 +80,20 @@ export default observer(function Gauge({index}) {
     }
 
     return (
-        <Container $isSelected={selectedStore.selected === index}>
+        <Container $isSelected={isSelected}>
             <Button
                 $height={mainHeight}
                 $fontS={fontSize}
                 onClick={handleDecrement}
-                disabled={disabledButton(gaugeStore.count, 'decrement')}
-                $isSelected={selectedStore.selected === index}
+                disabled={disabledButton(count, 'decrement')}
+                $isSelected={isSelected}
             >
                 &lt;
             </Button>
 
             <ProgressContainer>
-                <TitleValue $fontS={fontSize}>{gaugeStore.count}</TitleValue>
-                <Bar $size={barWidth} $value={gaugeStore.count} onPointerDown={handleDown} onPointerMove={handleMove} onPointerUp={handleUp}>
+                <TitleValue $fontS={fontSize}>{count}</TitleValue>
+                <Bar $size={barWidth} $value={count} onPointerDown={handleDown} onPointerMove={handleMove} onPointerUp={handleUp}>
                 </Bar>
             </ProgressContainer>
 
@@ -87,8 +101,8 @@ export default observer(function Gauge({index}) {
                 $height={mainHeight}
                 $fontS={fontSize}
                 onClick={handleIncrement}
-                disabled={disabledButton(gaugeStore.count, 'increment')}
-                $isSelected={selectedStore.selected === index}
+                disabled={disabledButton(count, 'increment')}
+                $isSelected={isSelected}
             >
                 &gt;
             </Button>

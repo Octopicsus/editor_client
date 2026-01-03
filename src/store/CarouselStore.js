@@ -3,23 +3,45 @@ import axios from "axios"
 import { API_PORT } from "../../config/port"
 
 class CarouselStore {
-  count = 0
-  options = []
+  valuesById = {}
+  optionsById = {}
+  maxCountById = {}
 
   constructor() {
     makeAutoObservable(this)
-    this.getValue()
   }
 
-  async getValue() {
+  getCount(id) {
+    return this.valuesById[id] ?? 0
+  }
+
+  getOptions(id) {
+    return this.optionsById[id] ?? []
+  }
+
+  getMaxCount(id) {
+    return this.maxCountById[id] 
+  }
+
+  setClampValue(id, value, min = 0, max = this.getMaxCount(id)) {
+    const clamped = Math.min(Math.max(Number(value), min), max)
+    this.valuesById[id] = clamped
+    return clamped
+  }
+
+  async getValue(id) {
     try {
-      const { data } = await axios.get(`http://localhost:${API_PORT}/api/valueCarousel`)
+      const { data } = await axios.get(`http://localhost:${API_PORT}/api/valueCarousel`, {
+        params: { id }
+      })
 
       runInAction(() => {
-        this.options = data.options
-        this.maxCount = data.options.length - 1
-        const startValue = data.value !== null ? data.value : data.defaultValue
-        this.setClampValue(startValue)
+        const settings = data.options ?? []
+        this.optionsById[id] = settings
+        this.maxCountById[id] = settings.length - 1
+
+        const startValue = data.value ?? 0
+        this.setClampValue(id, startValue)
       })
 
     } catch (error) {
@@ -27,12 +49,12 @@ class CarouselStore {
     }
   }
 
-  async postValue(value) {
+  async postValue(id, value) {
     try {
-      const { data } = await axios.post(`http://localhost:${API_PORT}/api/valueCarousel`, { value })
+      const { data } = await axios.post(`http://localhost:${API_PORT}/api/valueCarousel`, { id, value })
 
       runInAction(() => {
-        this.setClampValue(data.value)
+        this.setClampValue(id, data.value)
       })
 
     } catch (error) {
@@ -41,27 +63,23 @@ class CarouselStore {
   }
 
 
-  setClampValue(value, min = 0, max = this.maxCount) {
-    this.count = Math.min(Math.max(value, min), max)
+  canIncrement(id) {
+    return this.getCount(id) < this.getMaxCount(id)
   }
 
-  get canIncrement() {
-    return this.count < this.maxCount
+  canDecrement(id) {
+    return this.getCount(id) > 0
   }
 
-  get canDecrement() {
-    return this.count > 0
-  }
-
-  increment() {
-    if (this.canIncrement) {
-      this.count++
+  increment(id) {
+    if (this.canIncrement(id)) {
+      this.setClampValue(id, this.getCount(id) + 1)
     }
   }
 
-  decrement() {
-    if (this.canDecrement) {
-      this.count--
+  decrement(id) {
+    if (this.canDecrement(id)) {
+      this.setClampValue(id, this.getCount(id) - 1)
     }
   }
 }

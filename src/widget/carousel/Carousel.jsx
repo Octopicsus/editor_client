@@ -1,28 +1,48 @@
 import { observer } from "mobx-react-lite"
+import { useEffect } from "react"
+import { selectedStore } from "../../store/SelectedStore"
 import { carouselStore } from "../../store/CarouselStore"
 import { Container, TitleValue, SubContainer, BubbleContainer, Bubble } from "./Carousel.styled"
 import { Button } from "../valueButton/ValueButton.styled"
-import { selectedStore } from "../../store/SelectedStore"
 
 
-export default observer(function Carousel({ index }) {
+export default observer(function Carousel({ id, index }) {
   const carouselView = 220
   const mainHeight = 60
 
+  const isSelected = selectedStore.selected === index
+
+  const count = carouselStore.getCount(id)
+  const options = carouselStore.getOptions(id)
+  const maxCount = carouselStore.getMaxCount(id)
+
+  useEffect(() => {
+    carouselStore.getValue(id)
+  }, [id])
+
+  const selectBubble = (bubbleIndex) => {
+    if (!isSelected) return
+
+    carouselStore.setClampValue(id, bubbleIndex)
+    carouselStore.postValue(id, bubbleIndex)
+  }
 
   const handleIncrement = () => {
-    carouselStore.increment()
-    carouselStore.postValue(carouselStore.count)
+    if (!isSelected) return
+
+    carouselStore.increment(id)
+    carouselStore.postValue(id, carouselStore.getCount(id))
   }
 
   const handleDecrement = () => {
-    carouselStore.decrement()
-    carouselStore.postValue(carouselStore.count)
+    if (!isSelected) return
+
+    carouselStore.decrement(id)
+    carouselStore.postValue(id, carouselStore.getCount(id))
   }
 
   const showTitle = (value) => {
-    const title = carouselStore.options[value]
-    return title
+    return options[value]
   }
 
   const disabledButton = (value, maxValue, side) => {
@@ -36,30 +56,27 @@ export default observer(function Carousel({ index }) {
     }
   }
 
-  const selectBubble = (bubbleIndex) => {
-    carouselStore.setClampValue(bubbleIndex)
-    carouselStore.postValue(bubbleIndex)
-  }
+
 
 
   return (
-    <Container $isSelected={selectedStore.selected === index}>
+    <Container $isSelected={isSelected}>
       <Button
         $height={mainHeight}
         onClick={handleDecrement}
-        disabled={disabledButton(carouselStore.count, carouselStore.maxCount, 'decrement')}
-        $isSelected={selectedStore.selected === index}
+        disabled={disabledButton(count, maxCount, 'decrement')}
+        $isSelected={isSelected}
       >
         &lt;
       </Button>
 
       <SubContainer $width={carouselView}>
-        <TitleValue>{showTitle(carouselStore.count)}</TitleValue>
+        <TitleValue>{showTitle(count)}</TitleValue>
         <BubbleContainer>
-          {carouselStore.options.map((option, optionIndex) => (
+          {options.map((option, optionIndex) => (
             <Bubble
               key={optionIndex}
-              $isActive={optionIndex === carouselStore.count}
+              $isActive={optionIndex === count}
               onClick={() => selectBubble(optionIndex)}
             />
           ))}
@@ -69,8 +86,8 @@ export default observer(function Carousel({ index }) {
       <Button
         $height={mainHeight}
         onClick={handleIncrement}
-        disabled={disabledButton(carouselStore.count, carouselStore.maxCount, 'increment')}
-        $isSelected={selectedStore.selected === index}
+        disabled={disabledButton(count, maxCount, 'increment')}
+        $isSelected={isSelected}
       >
         &gt;
       </Button>
