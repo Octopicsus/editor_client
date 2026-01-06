@@ -14,7 +14,7 @@ content: "";
 display: block;
 width: ${({ $value }) => `${$value}%`};
 height: 100%;
-background-color: #5b5b5bff;
+background-color: #4c4c4cff;
 position: absolute;
 transition: all 0.3s;
 }

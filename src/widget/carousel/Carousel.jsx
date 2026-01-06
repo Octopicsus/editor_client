@@ -21,22 +21,16 @@ export default observer(function Carousel({ id, index }) {
   }, [id])
 
   const selectBubble = (bubbleIndex) => {
-    if (!isSelected) return
-
-    carouselStore.setClampValue(id, bubbleIndex)
+    carouselStore.setCarouselValue(id, bubbleIndex)
     carouselStore.postValue(id, bubbleIndex)
   }
 
   const handleIncrement = () => {
-    if (!isSelected) return
-
     carouselStore.increment(id)
     carouselStore.postValue(id, carouselStore.getCount(id))
   }
 
   const handleDecrement = () => {
-    if (!isSelected) return
-
     carouselStore.decrement(id)
     carouselStore.postValue(id, carouselStore.getCount(id))
   }

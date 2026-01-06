@@ -51,7 +51,7 @@ export default observer(function Gauge({ id, index }) {
         const rect = event.currentTarget.getBoundingClientRect()
 
         let position = Math.round(((x - rect.left) / barWidth) * 100)
-        gaugeStore.setClampValue(id, position)
+        gaugeStore.setGaugeValue(id, position)
     }
 
     const handleIncrement = () => {

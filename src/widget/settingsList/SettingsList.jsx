@@ -19,7 +19,8 @@ export default observer(function SettingsList() {
         >
 
           <TitleItem>{widget.title}</TitleItem>
-          {widget.type === 'gauge' && <Gauge id={widget.id} index={index} />}
+          {widget.type === 'gauge' && <Gauge id={widget.id} index={index}
+          />}
           {widget.type === 'carousel' && <Carousel id={widget.id} index={index} />}
 
         </Item>
