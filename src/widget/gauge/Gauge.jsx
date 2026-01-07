@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 
 export default observer(function Gauge({ id, index }) {
     const barWidth = 180
-    const mainHeight = 60
+    const mainHeight = 68
     let fontSize = mainHeight / 3
 
     const [isDragging, setIsDragging] = useState(false)
@@ -16,7 +16,7 @@ export default observer(function Gauge({ id, index }) {
 
     useEffect(() => {
         gaugeStore.getValue(id)
-    }, [id])
+    }, [])
 
 
     const handleDown = (event) => {

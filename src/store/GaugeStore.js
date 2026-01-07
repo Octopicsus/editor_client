@@ -11,7 +11,11 @@ class GaugeStore {
     }
 
     getCount(id) {
-        return this.valuesById[id]
+        return this.valuesById[id] ?? this.getDefaultCount(id)
+    }
+
+    getDefaultCount(id) {
+        return this.defaultValueById[id] ?? 0
     }
 
     setGaugeValue(id, value, min = 0, max = 100) {

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Root = styled.div`
   width: 100%;
@@ -11,5 +11,4 @@ export const Root = styled.div`
   margin: 0 auto;
 
   text-align: center;
-`
-
+`;

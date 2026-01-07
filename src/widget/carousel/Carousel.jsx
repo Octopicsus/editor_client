@@ -2,14 +2,15 @@ import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
 import { selectedStore } from "../../store/SelectedStore"
 import { carouselStore } from "../../store/CarouselStore"
-import { Container, TitleValue, SubContainer, BubbleContainer, Bubble } from "./Carousel.styled"
+import {
+  Container, TitleValue, SubContainer, BubbleContainer, Bubble
+} from "./Carousel.styled"
 import { Button } from "../valueButton/ValueButton.styled"
 
 
 export default observer(function Carousel({ id, index }) {
   const carouselView = 180
-  const mainHeight = 60
-
+  const mainHeight = 68
   const isSelected = selectedStore.selected === index
 
   const count = carouselStore.getCount(id)
@@ -18,7 +19,7 @@ export default observer(function Carousel({ id, index }) {
 
   useEffect(() => {
     carouselStore.getValue(id)
-  }, [id])
+  }, [])
 
   const selectBubble = (bubbleIndex) => {
     carouselStore.setCarouselValue(id, bubbleIndex)
@@ -49,9 +50,6 @@ export default observer(function Carousel({ id, index }) {
         return false
     }
   }
-
-
-
 
   return (
     <Container $isSelected={isSelected}>
