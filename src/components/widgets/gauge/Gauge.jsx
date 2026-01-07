@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
-import { selectedStore } from "../../store/SelectedStore"
-import { gaugeStore } from "../../store/GaugeStore"
+import { selectedStore } from "../../../store/SelectedStore"
+import { gaugeStore } from "../../../store/GaugeStore"
 import { ProgressContainer, Bar, Container, TitleValue } from "./Gauge.styled"
 import { Button } from "../valueButton/ValueButton.styled"
 import { useEffect, useState } from "react"

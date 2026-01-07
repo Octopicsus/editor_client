@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
-import { selectedStore } from "../../store/SelectedStore"
-import { carouselStore } from "../../store/CarouselStore"
+import { selectedStore } from "../../../store/SelectedStore"
+import { carouselStore } from "../../../store/CarouselStore"
 import {
   Container, TitleValue, SubContainer, BubbleContainer, Bubble
 } from "./Carousel.styled"

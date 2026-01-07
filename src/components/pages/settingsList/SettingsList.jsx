@@ -1,9 +1,9 @@
-import { observer } from "mobx-react-lite";
-import { settingsStore } from "../../store/SettingsStore";
-import { selectedStore } from "../../store/SelectedStore";
-import Gauge from "../gauge/Gauge";
-import Carousel from "../carousel/Carousel";
-import { Item, TitleItem, ListWrapper } from "./SettingsList.styled";
+import { observer } from "mobx-react-lite"
+import { settingsStore } from "../../../store/SettingsStore"
+import { selectedStore } from "../../../store/SelectedStore"
+import Gauge from "../../widgets/gauge/Gauge"
+import Carousel from "../../widgets/carousel/Carousel"
+import { Item, TitleItem, ListWrapper } from "./SettingsList.styled"
 
 export default observer(function SettingsList() {
   return (
@@ -25,5 +25,5 @@ export default observer(function SettingsList() {
         </Item>
       ))}
     </ListWrapper>
-  );
-});
+  )
+})
