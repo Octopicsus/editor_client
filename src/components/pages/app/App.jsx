@@ -8,6 +8,7 @@ import {
 import { Root, NavWrapper, Button } from "./App.styled";
 import SettingsList from "../settingsList/SettingsList";
 import SettingsEditor from "../settingsEditor/SettingsEditor";
+import { settingsStore } from "../../../store/SettingsStore";
 import { observer } from "mobx-react-lite";
 
 function App() {
@@ -22,10 +23,14 @@ function App() {
     return locaction.pathname === "/settings" ? "editor" : "settings";
   };
 
+  const reset = async () => {
+    await settingsStore.resetSettings();
+  };
+
   return (
     <Root>
       <NavWrapper>
-        <Button>reset</Button>
+        <Button onClick={reset}>reset</Button>
         <Button onClick={() => navigate(pageToggle())}>
           {getButtonText()}
         </Button>
