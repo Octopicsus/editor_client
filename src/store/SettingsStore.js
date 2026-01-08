@@ -38,10 +38,14 @@ class SettingsStore {
 
         widgets.forEach((widget) => {
           if (widget.type === "gauge") {
+            gaugeStore.defaultValueById[widget.id] = Number(widget.defaultValue ?? 0);
+            
             gaugeStore.setGaugeValue(widget.id, widget.value);
           }
 
           if (widget.type === "carousel") {
+            carouselStore.defaultValueById[widget.id] = Number(widget.defaultValue ?? 0);
+
             carouselStore.setCarouselValue(widget.id, widget.value);
           }
         });

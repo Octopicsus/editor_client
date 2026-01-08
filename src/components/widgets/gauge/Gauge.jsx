@@ -106,7 +106,6 @@ export default observer(function Gauge({ id, index }) {
                     $isSelected={isSelected}
                 >
                 </Bar>
-
             </ProgressContainer>
 
             <Button
