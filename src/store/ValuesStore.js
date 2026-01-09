@@ -67,6 +67,17 @@ class ValuesStore {
     }
   }
 
+  isDefaultValues() {
+    const state = Object.keys(this.valuesById).every(
+      (id) => this.valuesById[id] === this.defaultValueById[id]
+    )
+    return state
+  }
+
+  //  ROUTES
+
+  //  -------------- GET ------------------------------
+
   async getValues(id) {
     try {
       const { data } = await axios.get(
@@ -91,6 +102,8 @@ class ValuesStore {
     }
   }
 
+  //  -------------- POST ------------------------------
+
   async postValues(id, value) {
     try {
       const { data } = await axios.post(
@@ -105,6 +118,8 @@ class ValuesStore {
       console.error("Sync Data error", error)
     }
   }
+
+  //  -------------- RESET ------------------------------
 
   async resetAll() {
     try {
