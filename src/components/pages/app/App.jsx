@@ -4,28 +4,29 @@ import {
   Navigate,
   useNavigate,
   useLocation,
-} from "react-router-dom";
-import { Root, NavWrapper, Button } from "./App.styled";
-import SettingsList from "../settingsList/SettingsList";
-import SettingsEditor from "../settingsEditor/SettingsEditor";
-import { settingsStore } from "../../../store/SettingsStore";
-import { observer } from "mobx-react-lite";
+} from "react-router-dom"
+import { Root, NavWrapper, Button } from "./App.styled"
+import SettingsList from "../settingsList/SettingsList"
+import SettingsEditor from "../settingsEditor/SettingsEditor"
+import { valuesStore } from "../../../store/ValuesStore"
+import { observer } from "mobx-react-lite"
+import { values } from "mobx"
 
 function App() {
-  const navigate = useNavigate();
-  const locaction = useLocation();
+  const navigate = useNavigate()
+  const locaction = useLocation()
 
   const pageToggle = () => {
-    return location.pathname === "/settings" ? "/editor" : "/settings";
-  };
+    return location.pathname === "/settings" ? "/editor" : "/settings"
+  }
 
   const getButtonText = () => {
-    return locaction.pathname === "/settings" ? "editor" : "settings";
-  };
+    return locaction.pathname === "/settings" ? "editor" : "settings"
+  }
 
   const reset = async () => {
-    await settingsStore.resetSettings();
-  };
+    await valuesStore.resetAll()
+  }
 
   return (
     <Root>
@@ -43,7 +44,7 @@ function App() {
         <Route path="/editor" element={<SettingsEditor />} />
       </Routes>
     </Root>
-  );
+  )
 }
 
-export default observer(App);
+export default observer(App)

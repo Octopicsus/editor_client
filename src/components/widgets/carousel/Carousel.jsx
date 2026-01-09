@@ -1,39 +1,42 @@
 import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
 import { selectedStore } from "../../../store/SelectedStore"
-import { carouselStore } from "../../../store/CarouselStore"
+import { valuesStore } from "../../../store/ValuesStore"
 import {
-  Container, TitleValue, SubContainer, BubbleContainer, Bubble
+  Container,
+  TitleValue,
+  SubContainer,
+  BubbleContainer,
+  Bubble,
 } from "./Carousel.styled"
 import { Button } from "../valueButton/ValueButton.styled"
-
 
 export default observer(function Carousel({ id, index }) {
   const carouselView = 180
   const mainHeight = 68
   const isSelected = selectedStore.selected === index
 
-  const count = carouselStore.getCount(id)
-  const options = carouselStore.getOptions(id)
-  const maxCount = carouselStore.getMaxCount(id)
+  const currentValue = valuesStore.getValue(id)
+  const options = valuesStore.getOptions(id)
+  const maxCount = valuesStore.getMaxCount(id)
 
   useEffect(() => {
-    carouselStore.getValue(id)
-  }, [])
+    valuesStore.getValues(id)
+  }, [id])
 
   const selectBubble = (bubbleIndex) => {
-    carouselStore.setCarouselValue(id, bubbleIndex)
-    carouselStore.postValue(id, bubbleIndex)
+    valuesStore.setClampValue(id, bubbleIndex)
+    valuesStore.postValues(id, bubbleIndex)
   }
 
   const handleIncrement = () => {
-    carouselStore.increment(id)
-    carouselStore.postValue(id, carouselStore.getCount(id))
+    valuesStore.increment(id)
+    valuesStore.postValues(id, valuesStore.getValue(id))
   }
 
   const handleDecrement = () => {
-    carouselStore.decrement(id)
-    carouselStore.postValue(id, carouselStore.getCount(id))
+   valuesStore.decrement(id)
+    valuesStore.postValues(id, valuesStore.getValue(id))
   }
 
   const showTitle = (value) => {
@@ -42,9 +45,9 @@ export default observer(function Carousel({ id, index }) {
 
   const disabledButton = (value, maxValue, side) => {
     switch (side) {
-      case 'decrement':
+      case "decrement":
         return value === 0
-      case 'increment':
+      case "increment":
         return value === maxValue
       default:
         return false
@@ -56,31 +59,30 @@ export default observer(function Carousel({ id, index }) {
       <Button
         $height={mainHeight}
         onClick={handleDecrement}
-        disabled={disabledButton(count, maxCount, 'decrement')}
+        disabled={disabledButton(currentValue, maxCount, "decrement")}
         $isSelected={isSelected}
       >
         &lt;
       </Button>
 
       <SubContainer $width={carouselView}>
-        <TitleValue>{showTitle(count)}</TitleValue>
+        <TitleValue>{showTitle(currentValue)}</TitleValue>
 
         <BubbleContainer $isSelected={isSelected}>
           {options.map((option, optionIndex) => (
             <Bubble
               key={optionIndex}
-              $isActive={optionIndex === count}
+              $isActive={optionIndex === currentValue}
               onClick={() => selectBubble(optionIndex)}
             />
           ))}
         </BubbleContainer>
-
       </SubContainer>
 
       <Button
         $height={mainHeight}
         onClick={handleIncrement}
-        disabled={disabledButton(count, maxCount, 'increment')}
+        disabled={disabledButton(currentValue, maxCount, "increment")}
         $isSelected={isSelected}
       >
         &gt;

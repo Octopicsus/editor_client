@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Bar = styled.div`
   width: ${({ $size }) => `${$size}px`};
@@ -31,7 +31,7 @@ export const Bar = styled.div`
     position: absolute;
     transition: all 0.3s;
   }
-`;
+`
 
 export const Container = styled.div`
   display: flex;
@@ -51,9 +51,9 @@ export const Container = styled.div`
     opacity: ${(props) => (props.$isSelected ? "0" : "1")};
     transition: all 0.3s;
   }
-`;
+`
 
-export const ProgressContainer = styled.div``;
+export const ProgressContainer = styled.div``
 
 export const TitleValue = styled.h3`
   margin-top: 22px;
@@ -64,4 +64,4 @@ export const TitleValue = styled.h3`
   z-index: 1;
   color: rgba(177, 177, 177, 1);
   user-select: none;
-`;
+`
