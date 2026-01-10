@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const Container = styled.div`
   display: flex;
@@ -19,7 +19,7 @@ export const Container = styled.div`
     opacity: ${(props) => (props.$isSelected ? "0" : "1")};
     transition: all 0.3s;
   }
-`;
+`
 
 export const TitleValue = styled.h3`
   width: 100%;
@@ -33,7 +33,7 @@ export const TitleValue = styled.h3`
   user-select: none;
   font-size: 19px;
   text-transform: uppercase;
-`;
+`
 
 export const SubContainer = styled.div`
   display: flex;
@@ -42,7 +42,7 @@ export const SubContainer = styled.div`
   width: ${({ $width }) => `${$width}px`};
   height: 50px;
   gap: 0px;
-`;
+`
 
 export const BubbleContainer = styled.div`
   display: flex;
@@ -51,14 +51,17 @@ export const BubbleContainer = styled.div`
   gap: 5px;
   opacity: ${(props) => (props.$isSelected ? 1 : 0)};
   transition: 0.3s;
-`;
+`
 
 export const Bubble = styled.div`
   width: 12px;
   height: 6px;
   border-radius: 5%;
-  background-color: ${({ $isActive }) =>
-    $isActive ? "#9e9e9eff" : "#363636ff"};
   transition: all 0.3s;
   cursor: pointer;
-`;
+  background-image: radial-gradient(circle at center, gray 1px, transparent 0),
+    radial-gradient(circle at center, #4c4c4cff 0.25rem, transparent 0.5%);
+  background-size: 2px 2px;
+  background-position: 0 0, 0.65rem 0.65rem;
+  opacity: ${(props) => (props.$isActive ? 1 : 0.4)};
+`

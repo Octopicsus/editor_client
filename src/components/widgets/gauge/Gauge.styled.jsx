@@ -17,6 +17,10 @@ export const Bar = styled.div`
     background-color: #4c4c4cff;
     position: absolute;
     transition: all 0.3s;
+    background-image: radial-gradient(circle at center, gray 1px, transparent 0),
+      radial-gradient(circle at center, #4c4c4cff 0.25rem, transparent 0.5%);
+    background-size: 2px 2px;
+    background-position: 0 0, 0.65rem 0.65rem;
   }
 
   &::after {
