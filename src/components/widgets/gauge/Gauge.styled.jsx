@@ -11,12 +11,12 @@ export const Bar = styled.div`
   transition: 0.3s;
   background-image: radial-gradient(
       circle at center,
-      var(--color-texture-filldark) 1px,
+      var(--color-texture-dark-fill) 1px,
       transparent 0%
     ),
     radial-gradient(
       circle at center,
-      var(--color-texture-shadowdark) 0.25rem,
+      var(--color-texture-dark-shadow) 0.25rem,
       transparent 0.5%
     );
   background-size: 2px 2px;
@@ -32,17 +32,17 @@ export const Bar = styled.div`
     transition: all 0.3s;
     background-image: radial-gradient(
         circle at center,
-        var(--color-texture-gray) 1px,
+        var(--color-texture-light-fill) 1px,
         transparent 0
       ),
       radial-gradient(
         circle at center,
-        var(--color-texture-dark) 0.25rem,
+        var(--color-texture-light-shadow) 0.25rem,
         transparent 0.5%
       );
     background-size: 2px 2px;
     background-position: 0 0, 0.65rem 0.65rem;
-    opacity: 0.9;
+    opacity: 0.6;
   }
 
   &::after {
@@ -82,7 +82,7 @@ export const Container = styled.div`
 export const ProgressContainer = styled.div``
 
 export const TitleValue = styled.h3`
-  margin-top: 22px;
+  margin-top: 20px;
   margin-bottom: 2px;
   width: ${({ $size }) => `${$size}px`};
   pointer-events: none;

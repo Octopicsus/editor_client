@@ -12,7 +12,7 @@ export default observer(function Gauge({ id, index }) {
 
   const [isDragging, setIsDragging] = useState(false)
   const isSelected = selectedStore.selected === index
-  const currentValue = settingsStore.getValue(id)
+  const currentValue = settingsStore.getCurrentValue(id)
 
   useEffect(() => {
     settingsStore.getValues(id)
@@ -36,7 +36,7 @@ export default observer(function Gauge({ id, index }) {
       event.currentTarget.releasePointerCapture(event.pointerId)
     }
     setIsDragging(false)
-    settingsStore.postValues(id, settingsStore.getValue(id))
+    settingsStore.postValues(id, settingsStore.getCurrentValue(id))
   }
 
   const setCountbyPointer = (event) => {
@@ -48,7 +48,7 @@ export default observer(function Gauge({ id, index }) {
   }
 
   const postAfterChange = async (id) => {
-    await settingsStore.postValues(id, settingsStore.getValue(id))
+    await settingsStore.postValues(id, settingsStore.getCurrentValue(id))
   }
 
   const handleIncrement = async () => {
@@ -58,10 +58,8 @@ export default observer(function Gauge({ id, index }) {
 
   const handleDecrement = async () => {
     settingsStore.decrement(id)
-   await postAfterChange(id)
+    await postAfterChange(id)
   }
-
-
 
   return (
     <Container $isSelected={isSelected}>

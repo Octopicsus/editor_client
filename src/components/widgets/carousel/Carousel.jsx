@@ -16,7 +16,7 @@ export default observer(function Carousel({ id, index }) {
   const mainHeight = 68
   const isSelected = selectedStore.selected === index
 
-  const currentValue = settingsStore.getValue(id)
+  const currentValue = settingsStore.getCurrentValue(id)
   const options = settingsStore.getOptions(id)
   const maxCount = settingsStore.getMaxCount(id)
 
@@ -29,27 +29,34 @@ export default observer(function Carousel({ id, index }) {
     settingsStore.postValues(id, bubbleIndex)
   }
 
-  const handleIncrement = () => {
-    settingsStore.increment(id)
-    settingsStore.postValues(id, settingsStore.getValue(id))
+  const postAfterChange = async (id) => {
+    await settingsStore.postValues(id, settingsStore.getCurrentValue(id))
   }
 
-  const handleDecrement = () => {
-   settingsStore.decrement(id)
-    settingsStore.postValues(id, settingsStore.getValue(id))
+  const handleIncrement = async () => {
+    settingsStore.increment(id)
+    await postAfterChange(id)
+  }
+
+  const handleDecrement = async () => {
+    settingsStore.decrement(id)
+    await postAfterChange(id)
   }
 
   const showTitle = (value) => {
     return options[value]
   }
 
-
   return (
     <Container $isSelected={isSelected}>
       <Button
         $height={mainHeight}
         onClick={handleDecrement}
-        disabled={settingsStore.disabledButton(currentValue, maxCount, "decrement")}
+        disabled={settingsStore.disabledButton(
+          currentValue,
+          maxCount,
+          "decrement"
+        )}
         $isSelected={isSelected}
       >
         &lt;
@@ -72,7 +79,11 @@ export default observer(function Carousel({ id, index }) {
       <Button
         $height={mainHeight}
         onClick={handleIncrement}
-        disabled={settingsStore.disabledButton(currentValue, maxCount, "increment")}
+        disabled={settingsStore.disabledButton(
+          currentValue,
+          maxCount,
+          "increment"
+        )}
         $isSelected={isSelected}
       >
         &gt;

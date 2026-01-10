@@ -26,7 +26,7 @@ export const TitleValue = styled.h3`
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 22px;
+  margin-top: 28px;
   margin-bottom: 2px;
   pointer-events: none;
   z-index: 1;
@@ -62,12 +62,12 @@ export const Bubble = styled.div`
   cursor: pointer;
   background-image: radial-gradient(
       circle at center,
-      var(--color-texture-gray) 1px,
+      var(--color-texture-light-fill) 1px,
       transparent 0
     ),
     radial-gradient(
       circle at center,
-      var(--color-texture-dark) 0.25rem,
+      var(--color-texture-light-shadow) 0.25rem,
       transparent 0.5%
     );
   background-size: 2px 2px;

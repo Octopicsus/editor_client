@@ -16,11 +16,49 @@ class SettingsStore {
     this.loadSettings()
   }
 
+  // ----------------  Cache
+
+  getCache(key) {
+    const cached = sessionStorage.getItem(key)
+    return cached ? JSON.parse(cached) : null
+  }
+
+  setCache(key, data) {
+    sessionStorage.setItem(key, JSON.stringify(data))
+  }
+
+  clearCahce(key) {
+    sessionStorage.removeItem(key)
+  }
+
+    //  -------- KEY Title
+
+  keyTitle = `id-`
+
+  preloadCache(data) {
+    data.forEach((widget) => {
+      const cached = this.getCache(`${this.keyTitle}${widget.id}`)
+
+      if (cached) {
+        this.typeById[widget.id] = cached.type
+        this.defaultValueById[widget.id] = cached.defaultValue
+        this.valuesById[widget.id] = cached.value
+
+        if (cached.type === "carousel") {
+          this.optionsById[widget.id] = cached.options
+          this.maxCountById[widget.id] = cached.options.length - 1
+        }
+      }
+    })
+  }
+
+  // ----------------  Get Varibales
+
   getType(id) {
     return this.typeById[id]
   }
 
-  getValue(id) {
+  getCurrentValue(id) {
     return this.valuesById[id] ?? this.getDefaultValue(id)
   }
 
@@ -50,23 +88,25 @@ class SettingsStore {
     return clamped
   }
 
+  // ----------------  Actions
+
   canIncrement(id) {
-    return this.getValue(id) < this.getMaxCount(id)
+    return this.getCurrentValue(id) < this.getMaxCount(id)
   }
 
   canDecrement(id) {
-    return this.getValue(id) > 0
+    return this.getCurrentValue(id) > 0
   }
 
   increment(id) {
     if (this.canIncrement(id)) {
-      this.setClampValue(id, this.getValue(id) + 1)
+      this.setClampValue(id, this.getCurrentValue(id) + 1)
     }
   }
 
   decrement(id) {
     if (this.canDecrement(id)) {
-      this.setClampValue(id, this.getValue(id) - 1)
+      this.setClampValue(id, this.getCurrentValue(id) - 1)
     }
   }
 
@@ -88,11 +128,23 @@ class SettingsStore {
     }
   }
 
+  //
+  //
   //  ROUTES
 
   // -------------- FULL LIST ---------------------------
 
   async loadSettings() {
+    const cached = this.getCache("settings")
+
+    if (cached) {
+      runInAction(() => {
+        this.settings = cached
+        this.preloadCache(cached)
+      })
+      return
+    }
+
     try {
       const { data } = await axios.get(
         `http://localhost:${API_PORT}/api/settings`
@@ -100,15 +152,36 @@ class SettingsStore {
 
       runInAction(() => {
         this.settings = data
+        this.setCache("settings", data)
       })
     } catch (error) {
       console.error("Loading Setting List", error)
     }
   }
 
+
+
   //  -------------- GET ------------------------------
 
   async getValues(id) {
+    const key = `${this.keyTitle}${id}`
+    const cached = this.getCache(key)
+
+    if (cached) {
+      runInAction(() => {
+        this.typeById[id] = cached.type
+        this.defaultValueById[id] = cached.defaultValue
+
+        if (cached.type === "carousel") {
+          this.optionsById[id] = cached.options
+          this.maxCountById[id] = cached.options.length - 1
+        }
+
+        this.setClampValue(id, cached.value)
+      })
+      return
+    }
+
     try {
       const { data } = await axios.get(
         `http://localhost:${API_PORT}/api/settings/values`,
@@ -120,12 +193,12 @@ class SettingsStore {
         this.defaultValueById[id] = data.defaultValue
 
         if (data.type === "carousel") {
-          const settings = data.options ?? []
-          this.optionsById[id] = settings
-          this.maxCountById[id] = settings.length - 1
+          this.optionsById[id] = data.options
+          this.maxCountById[id] = data.options.length - 1
         }
 
         this.setClampValue(id, data.value)
+        this.setCache(key, data)
       })
     } catch (error) {
       console.error("Loading Error", error)
@@ -135,6 +208,8 @@ class SettingsStore {
   //  -------------- POST ------------------------------
 
   async postValues(id, value) {
+    const key = `${this.keyTitle}${id}`
+
     try {
       const { data } = await axios.post(
         `http://localhost:${API_PORT}/api/settings/values`,
@@ -143,6 +218,7 @@ class SettingsStore {
 
       runInAction(() => {
         this.setClampValue(id, data.value)
+        this.setCache(key, data)
       })
     } catch (error) {
       console.error("Sync Data error", error)
@@ -160,6 +236,9 @@ class SettingsStore {
       runInAction(() => {
         data.forEach((item) => {
           this.valuesById[item.id] = item.value
+          this.setCache(`${this.keyTitle}${item.id}`, item)
+          this.clearCahce(`${this.keyTitle}${item.id}`)
+          this.clearCahce("settings")
         })
       })
     } catch (error) {

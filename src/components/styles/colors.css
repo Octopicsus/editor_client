@@ -15,11 +15,11 @@
   --color-fill-bar: #4c4c4cff;
   --color-fill-inactive: #363636ff;
 
-  /* Texture & Patterns */
-  --color-texture-gray: gray;
-  --color-texture-dark: #4c4c4cff;
-  --color-texture-filldark: rgba(56, 56, 56, 1);
-  --color-texture-shadowdark: rgba(41, 41, 41, 0.799);
+  /* Halftone Texture */
+  --color-texture-light-fill: gray;
+  --color-texture-light-shadow: #4c4c4cff;
+  --color-texture-dark-fill: rgba(56, 56, 56, 1);
+  --color-texture-dark-shadow: rgba(33, 33, 33, 0.799);
 
   /* Dividers & Borders */
   --color-divider: rgba(33, 33, 33, 1);
