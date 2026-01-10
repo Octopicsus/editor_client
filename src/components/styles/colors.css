@@ -18,6 +18,8 @@
   /* Texture & Patterns */
   --color-texture-gray: gray;
   --color-texture-dark: #4c4c4cff;
+  --color-texture-filldark: rgba(56, 56, 56, 1);
+  --color-texture-shadowdark: rgba(41, 41, 41, 0.799);
 
   /* Dividers & Borders */
   --color-divider: rgba(33, 33, 33, 1);

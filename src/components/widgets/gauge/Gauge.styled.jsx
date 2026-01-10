@@ -9,6 +9,18 @@ export const Bar = styled.div`
   cursor: pointer;
   opacity: ${(props) => (props.$isSelected ? 1 : 0)};
   transition: 0.3s;
+  background-image: radial-gradient(
+      circle at center,
+      var(--color-texture-filldark) 1px,
+      transparent 0%
+    ),
+    radial-gradient(
+      circle at center,
+      var(--color-texture-shadowdark) 0.25rem,
+      transparent 0.5%
+    );
+  background-size: 2px 2px;
+  background-position: 0 0, 0.65rem 0.65rem;
 
   &::before {
     content: "";
@@ -18,8 +30,16 @@ export const Bar = styled.div`
     background-color: var(--color-fill-bar);
     position: absolute;
     transition: all 0.3s;
-    background-image: radial-gradient(circle at center, var(--color-texture-gray) 1px, transparent 0),
-      radial-gradient(circle at center, var(--color-texture-dark) 0.25rem, transparent 0.5%);
+    background-image: radial-gradient(
+        circle at center,
+        var(--color-texture-gray) 1px,
+        transparent 0
+      ),
+      radial-gradient(
+        circle at center,
+        var(--color-texture-dark) 0.25rem,
+        transparent 0.5%
+      );
     background-size: 2px 2px;
     background-position: 0 0, 0.65rem 0.65rem;
     opacity: 0.9;

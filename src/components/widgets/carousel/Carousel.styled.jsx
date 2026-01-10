@@ -60,9 +60,16 @@ export const Bubble = styled.div`
   border-radius: 5%;
   transition: all 0.3s;
   cursor: pointer;
-  --bubble-color: ${({ $isActive }) => $isActive ? '#9e9e9eff' : '#4c4c4cff'};
-  background-image: radial-gradient(circle at center, var(--color-texture-gray) 1px, transparent 0),
-    radial-gradient(circle at center, var(--bubble-color) 0.25rem, transparent 0.5%);
+  background-image: radial-gradient(
+      circle at center,
+      var(--color-texture-gray) 1px,
+      transparent 0
+    ),
+    radial-gradient(
+      circle at center,
+      var(--color-texture-dark) 0.25rem,
+      transparent 0.5%
+    );
   background-size: 2px 2px;
   background-position: 0 0, 0.65rem 0.65rem;
   opacity: ${(props) => (props.$isActive ? 0.9 : 0.4)};
