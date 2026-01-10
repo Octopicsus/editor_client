@@ -1,0 +1,25 @@
+/* Color Palette - Main Control Panel */
+
+:root {
+  /* Backgrounds */
+  --color-bg-dark: rgba(24, 24, 24, 1);
+  --color-bg-darker: rgba(33, 33, 33, 1);
+  --color-bg-page: #1f2020;
+
+  /* Text & UI Elements */
+  --color-text-muted: rgba(177, 177, 177, 1);
+  --color-text-light: #9e9e9eff;
+  --color-text-primary: rgba(255, 255, 255, 0.87);
+
+  /* Fills & Bars */
+  --color-fill-bar: #4c4c4cff;
+  --color-fill-inactive: #363636ff;
+
+  /* Texture & Patterns */
+  --color-texture-gray: gray;
+  --color-texture-dark: #4c4c4cff;
+
+  /* Dividers & Borders */
+  --color-divider: rgba(33, 33, 33, 1);
+  --color-border-accent: #9e9e9eff;
+}

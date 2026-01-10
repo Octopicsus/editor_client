@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import "../../styles/colors.css"
 
 export const NavWrapper = styled.div`
   display: flex;

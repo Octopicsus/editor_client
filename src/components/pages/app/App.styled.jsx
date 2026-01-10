@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import "../../styles/colors.css"
 
 export const Root = styled.div`
   width: 100%;

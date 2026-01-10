@@ -1,8 +1,9 @@
 import styled from "styled-components"
+import "../../styles/colors.css"
 
 export const Container = styled.div`
   display: flex;
-  background-color: rgba(24, 24, 24, 1);
+  background-color: var(--color-bg-dark);
   position: relative;
   pointer-events: ${(props) => (props.$isSelected ? "auto" : "none")};
 
@@ -12,7 +13,7 @@ export const Container = styled.div`
     position: absolute;
     width: 2px;
     height: 100%;
-    background-color: rgba(33, 33, 33, 1);
+    background-color: var(--color-bg-darker);
     top: 0;
     left: 0;
     z-index: 2;
@@ -29,7 +30,7 @@ export const TitleValue = styled.h3`
   margin-bottom: 2px;
   pointer-events: none;
   z-index: 1;
-  color: rgba(177, 177, 177, 1);
+  color: var(--color-text-muted);
   user-select: none;
   font-size: 19px;
   text-transform: uppercase;
@@ -59,8 +60,9 @@ export const Bubble = styled.div`
   border-radius: 5%;
   transition: all 0.3s;
   cursor: pointer;
-  background-image: radial-gradient(circle at center, gray 1px, transparent 0),
-    radial-gradient(circle at center, #4c4c4cff 0.25rem, transparent 0.5%);
+  --bubble-color: ${({ $isActive }) => $isActive ? '#9e9e9eff' : '#4c4c4cff'};
+  background-image: radial-gradient(circle at center, var(--color-texture-gray) 1px, transparent 0),
+    radial-gradient(circle at center, var(--bubble-color) 0.25rem, transparent 0.5%);
   background-size: 2px 2px;
   background-position: 0 0, 0.65rem 0.65rem;
   opacity: ${(props) => (props.$isActive ? 1 : 0.4)};

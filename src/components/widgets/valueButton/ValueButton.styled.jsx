@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import "../../styles/colors.css";
 
 export const Button = styled.button`
   background-color: rgba(101, 101, 101, 0);
-  color: #aeaeaeff;
+  color: var(--color-text-muted);
   font-size: 24px;
   font-family: "DotoR";
   border: none;

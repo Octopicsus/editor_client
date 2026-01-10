@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import "../../styles/colors.css"
 
 export const ListWrapper = styled.ul`
   display: flex;
@@ -17,7 +18,7 @@ export const Item = styled.li`
   align-items: center;
   width: 100%;
   background-color: ${(props) =>
-    props.$isSelected ? "rgba(24, 24, 24, 1)" : "rgba(0, 0, 0, 0.17)"};
+    props.$isSelected ? "var(--color-bg-dark)" : "rgba(0, 0, 0, 0.17)"};
 
   &::before {
     content: "";
@@ -51,7 +52,7 @@ export const TitleItem = styled.h3`
   padding-left: 24px;
   font-size: 18px;
   text-transform: uppercase;
-  color: rgba(146, 146, 146, 1);
+  color: var(--color-text-muted);
   font-weight: bolder;
   user-select: none;
 `
