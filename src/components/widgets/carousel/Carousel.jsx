@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
 import { selectedStore } from "../../../store/SelectedStore"
-import { valuesStore } from "../../../store/ValuesStore"
+import { settingsStore } from "../../../store/SettingsStore"
 import {
   Container,
   TitleValue,
@@ -16,27 +16,27 @@ export default observer(function Carousel({ id, index }) {
   const mainHeight = 68
   const isSelected = selectedStore.selected === index
 
-  const currentValue = valuesStore.getValue(id)
-  const options = valuesStore.getOptions(id)
-  const maxCount = valuesStore.getMaxCount(id)
+  const currentValue = settingsStore.getValue(id)
+  const options = settingsStore.getOptions(id)
+  const maxCount = settingsStore.getMaxCount(id)
 
   useEffect(() => {
-    valuesStore.getValues(id)
+    settingsStore.getValues(id)
   }, [id])
 
   const selectBubble = (bubbleIndex) => {
-    valuesStore.setClampValue(id, bubbleIndex)
-    valuesStore.postValues(id, bubbleIndex)
+    settingsStore.setClampValue(id, bubbleIndex)
+    settingsStore.postValues(id, bubbleIndex)
   }
 
   const handleIncrement = () => {
-    valuesStore.increment(id)
-    valuesStore.postValues(id, valuesStore.getValue(id))
+    settingsStore.increment(id)
+    settingsStore.postValues(id, settingsStore.getValue(id))
   }
 
   const handleDecrement = () => {
-   valuesStore.decrement(id)
-    valuesStore.postValues(id, valuesStore.getValue(id))
+   settingsStore.decrement(id)
+    settingsStore.postValues(id, settingsStore.getValue(id))
   }
 
   const showTitle = (value) => {

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom"
-import { valuesStore } from "../../../store/ValuesStore"
+import { settingsStore } from "../../../store/SettingsStore"
 import { NavWrapper, Button } from "./Menu.styled"
 import { observer } from "mobx-react-lite"
 
@@ -16,12 +16,12 @@ function Menu() {
   }
 
   const reset = async () => {
-    await valuesStore.resetAll()
+    await settingsStore.resetAll()
   }
 
   return (
     <NavWrapper>
-      <Button onClick={reset} $isDefault={valuesStore.isDefaultValues()}>
+      <Button onClick={reset} $isDefault={settingsStore.isDefaultValues()}>
         reset
       </Button>
       <Button onClick={() => navigate(pageToggle())}>{getButtonText()}</Button>
