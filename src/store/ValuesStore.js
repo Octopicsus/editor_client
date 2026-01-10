@@ -68,10 +68,10 @@ class ValuesStore {
   }
 
   isDefaultValues() {
-    const state = Object.keys(this.valuesById).every(
+    const arrState = Object.keys(this.valuesById).every(
       (id) => this.valuesById[id] === this.defaultValueById[id]
     )
-    return state
+    return arrState
   }
 
   //  ROUTES
@@ -123,14 +123,13 @@ class ValuesStore {
 
   async resetAll() {
     try {
-      const { data: resetResponse } = await axios.post(
+      const { data } = await axios.post(
         `http://localhost:${API_PORT}/api/settings/reset`
       )
 
       runInAction(() => {
-        resetResponse.data.forEach((item) => {
-          this.defaultValueById[item.id] = item.defaultValue
-          this.valuesById[item.id] = item.defaultValue
+        data.forEach((item) => {
+          this.valuesById[item.id] = item.value
         })
       })
     } catch (error) {

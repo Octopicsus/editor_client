@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 export const ListWrapper = styled.ul`
   display: flex;
@@ -8,7 +8,7 @@ export const ListWrapper = styled.ul`
   padding: 0;
   margin: 0;
   width: 700px;
-`;
+`
 
 export const Item = styled.li`
   position: relative;
@@ -45,7 +45,7 @@ export const Item = styled.li`
     width: 402px;
     z-index: -1;
   }
-`;
+`
 
 export const TitleItem = styled.h3`
   padding-left: 24px;
@@ -53,4 +53,5 @@ export const TitleItem = styled.h3`
   text-transform: uppercase;
   color: rgba(146, 146, 146, 1);
   font-weight: bolder;
-`;
+  user-select: none;
+`

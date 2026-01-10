@@ -20,4 +20,5 @@ export const Button = styled.button`
   text-transform: uppercase;
   font-size: 12px;
   color: ${(props) => (props.$isDefault ? "gray" : "white")};
+  user-select: none;
 `
