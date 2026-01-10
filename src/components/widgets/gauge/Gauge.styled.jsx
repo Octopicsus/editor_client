@@ -22,6 +22,7 @@ export const Bar = styled.div`
       radial-gradient(circle at center, var(--color-texture-dark) 0.25rem, transparent 0.5%);
     background-size: 2px 2px;
     background-position: 0 0, 0.65rem 0.65rem;
+    opacity: 0.9;
   }
 
   &::after {

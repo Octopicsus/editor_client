@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
-import { selectedStore } from "../../../store/SelectedStore"
+import { selectedStore } from "../../../store/selectedStore"
 import { settingsStore } from "../../../store/SettingsStore"
 import {
   Container,
@@ -43,23 +43,13 @@ export default observer(function Carousel({ id, index }) {
     return options[value]
   }
 
-  const disabledButton = (value, maxValue, side) => {
-    switch (side) {
-      case "decrement":
-        return value === 0
-      case "increment":
-        return value === maxValue
-      default:
-        return false
-    }
-  }
 
   return (
     <Container $isSelected={isSelected}>
       <Button
         $height={mainHeight}
         onClick={handleDecrement}
-        disabled={disabledButton(currentValue, maxCount, "decrement")}
+        disabled={settingsStore.disabledButton(currentValue, maxCount, "decrement")}
         $isSelected={isSelected}
       >
         &lt;
@@ -82,7 +72,7 @@ export default observer(function Carousel({ id, index }) {
       <Button
         $height={mainHeight}
         onClick={handleIncrement}
-        disabled={disabledButton(currentValue, maxCount, "increment")}
+        disabled={settingsStore.disabledButton(currentValue, maxCount, "increment")}
         $isSelected={isSelected}
       >
         &gt;

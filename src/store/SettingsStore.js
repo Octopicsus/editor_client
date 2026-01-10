@@ -77,6 +77,17 @@ class SettingsStore {
     return arrState
   }
 
+  disabledButton = (value, side) => {
+    switch (side) {
+      case "decrement":
+        return value === 0
+      case "increment":
+        return value === 100
+      default:
+        return false
+    }
+  }
+
   //  ROUTES
 
   // -------------- FULL LIST ---------------------------

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite"
-import { selectedStore } from "../../../store/SelectedStore"
+import { selectedStore } from "../../../store/selectedStore"
 import { settingsStore } from "../../../store/SettingsStore"
 import { ProgressContainer, Bar, Container, TitleValue } from "./Gauge.styled"
 import { Button } from "../valueButton/ValueButton.styled"
@@ -47,26 +47,21 @@ export default observer(function Gauge({ id, index }) {
     settingsStore.setClampValue(id, position)
   }
 
-  const handleIncrement = () => {
+  const postAfterChange = async (id) => {
+    await settingsStore.postValues(id, settingsStore.getValue(id))
+  }
+
+  const handleIncrement = async () => {
     settingsStore.increment(id)
-    settingsStore.postValues(id, settingsStore.getValue(id))
+    await postAfterChange(id)
   }
 
-  const handleDecrement = () => {
+  const handleDecrement = async () => {
     settingsStore.decrement(id)
-    settingsStore.postValues(id, settingsStore.getValue(id))
+   await postAfterChange(id)
   }
 
-  const disabledButton = (value, side) => {
-    switch (side) {
-      case "decrement":
-        return value === 0
-      case "increment":
-        return value === 100
-      default:
-        return false
-    }
-  }
+
 
   return (
     <Container $isSelected={isSelected}>
@@ -74,7 +69,7 @@ export default observer(function Gauge({ id, index }) {
         $height={mainHeight}
         $fontS={fontSize}
         onClick={handleDecrement}
-        disabled={disabledButton(currentValue, "decrement")}
+        disabled={settingsStore.disabledButton(currentValue, "decrement")}
         $isSelected={isSelected}
       >
         &lt;
@@ -99,7 +94,7 @@ export default observer(function Gauge({ id, index }) {
         $height={mainHeight}
         $fontS={fontSize}
         onClick={handleIncrement}
-        disabled={disabledButton(currentValue, "increment")}
+        disabled={settingsStore.disabledButton(currentValue, "increment")}
         $isSelected={isSelected}
       >
         &gt;

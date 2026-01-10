@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { settingsStore } from "../../../store/SettingsStore"
-import { selectedStore } from "../../../store/SelectedStore"
+import { selectedStore } from "../../../store/selectedStore"
 import Gauge from "../../widgets/gauge/Gauge"
 import Carousel from "../../widgets/carousel/Carousel"
 import { Item, TitleItem, ListWrapper } from "./SettingsList.styled"

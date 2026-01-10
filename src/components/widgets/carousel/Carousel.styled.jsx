@@ -65,5 +65,5 @@ export const Bubble = styled.div`
     radial-gradient(circle at center, var(--bubble-color) 0.25rem, transparent 0.5%);
   background-size: 2px 2px;
   background-position: 0 0, 0.65rem 0.65rem;
-  opacity: ${(props) => (props.$isActive ? 1 : 0.4)};
+  opacity: ${(props) => (props.$isActive ? 0.9 : 0.4)};
 `
