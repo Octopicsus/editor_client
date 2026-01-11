@@ -3,6 +3,8 @@ import axios from "axios"
 import { API_PORT } from "../../config/port"
 
 class SettingsStore {
+  keyTitle = `id-`
+
   settings = []
 
   typeById = {}
@@ -30,10 +32,6 @@ class SettingsStore {
   clearCahce(key) {
     sessionStorage.removeItem(key)
   }
-
-    //  -------- KEY Title
-
-  keyTitle = `id-`
 
   preloadCache(data) {
     data.forEach((widget) => {
@@ -147,7 +145,7 @@ class SettingsStore {
 
     try {
       const { data } = await axios.get(
-        `http://localhost:${API_PORT}/api/settings`
+        `http://${window.location.hostname}:${API_PORT}/api/settings`
       )
 
       runInAction(() => {
@@ -158,8 +156,6 @@ class SettingsStore {
       console.error("Loading Setting List", error)
     }
   }
-
-
 
   //  -------------- GET ------------------------------
 
@@ -184,7 +180,7 @@ class SettingsStore {
 
     try {
       const { data } = await axios.get(
-        `http://localhost:${API_PORT}/api/settings/values`,
+        `http://${window.location.hostname}:${API_PORT}/api/settings/values`,
         { params: { id } }
       )
 
@@ -212,7 +208,7 @@ class SettingsStore {
 
     try {
       const { data } = await axios.post(
-        `http://localhost:${API_PORT}/api/settings/values`,
+        `http://${window.location.hostname}:${API_PORT}/api/settings/values`,
         { id, value }
       )
 
@@ -230,7 +226,7 @@ class SettingsStore {
   async resetAll() {
     try {
       const { data } = await axios.post(
-        `http://localhost:${API_PORT}/api/settings/reset`
+        `http://${window.location.hostname}:${API_PORT}/api/settings/reset`
       )
 
       runInAction(() => {
