@@ -4,18 +4,18 @@ import { API_PORT } from "../../config/port"
 
 class SettingsStore {
   keyTitle = `id-`
-
   settings = []
-
   typeById = {}
   valuesById = {}
   defaultValueById = {}
   optionsById = {}
   maxCountById = {}
+  eventSource = null
 
   constructor() {
     makeAutoObservable(this)
     this.loadSettings()
+    this.connectSSE()
   }
 
   // ----------------  Cache
@@ -130,7 +130,43 @@ class SettingsStore {
   //
   //  ROUTES
 
-  // -------------- FULL LIST ---------------------------
+  // -------------- SSE ---------------------------
+
+  connectSSE() {
+    const url = `http://${window.location.hostname}:${API_PORT}/api/settings/stream`
+    this.eventSource = new EventSource(url)
+
+    this.eventSource.addEventListener("settings-updated", (event) => {
+      const data = JSON.parse(event.data)
+
+      runInAction(() => {
+        const key = `${this.keyTitle}${data.id}`
+        const itemData = {
+          id: data.id,
+          type: this.typeById[data.id],
+          defaultValue: this.defaultValueById[data.id],
+          value: data.value,
+          options: this.optionsById[data.id] || [],
+        }
+        this.setCache(key, itemData)
+
+        this.setClampValue(data.id, data.value)
+      })
+    })
+
+    this.eventSource.addEventListener("settings-reset", (event) => {
+      const data = JSON.parse(event.data)
+
+      runInAction(() => {
+        data.forEach((item) => {
+          this.setCache(`${this.keyTitle}${item.id}`, item)
+          this.valuesById[item.id] = item.value
+        })
+      })
+    })
+  }
+
+  // -------------- LOAD LIST ---------------------------
 
   async loadSettings() {
     const cached = this.getCache("settings")
