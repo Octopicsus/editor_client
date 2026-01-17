@@ -50,13 +50,13 @@ export const BubbleContainer = styled.div`
   width: 100%;
   justify-content: center;
   gap: 5px;
-  opacity: ${(props) => (props.$isSelected ? 1 : 0)};
+  opacity: ${(props) => (props.$isSelected ? 1 : 0.2)};
   transition: 0.3s;
 `
 
 export const Bubble = styled.div`
   width: 12px;
-  height: 6px;
+  height: ${(props) => (props.$isActive ? '6px' : '4px')};
   border-radius: 5%;
   transition: all 0.3s;
   cursor: pointer;

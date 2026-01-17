@@ -6,8 +6,6 @@ import { observer } from "mobx-react-lite"
 import Menu from "../../widgets/menu/Menu"
 
 function App() {
-
-
   return (
     <Root>
       <Menu />

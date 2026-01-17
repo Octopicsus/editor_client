@@ -3,11 +3,11 @@ import "../../styles/colors.css"
 
 export const Bar = styled.div`
   width: ${({ $size }) => `${$size}px`};
-  height: 6px;
+  height: 4px;
   background-color: var(--color-fill-inactive);
   position: relative;
   cursor: pointer;
-  opacity: ${(props) => (props.$isSelected ? 1 : 0)};
+  opacity: ${(props) => (props.$isSelected ? 1 : 0.2)};
   transition: 0.3s;
   background-image: radial-gradient(
       circle at center,
@@ -26,7 +26,7 @@ export const Bar = styled.div`
     content: "";
     display: block;
     width: ${({ $value }) => `${$value}%`};
-    height: 100%;
+    height: 4px;
     background-color: var(--color-fill-bar);
     position: absolute;
     transition: all 0.3s;
@@ -49,7 +49,7 @@ export const Bar = styled.div`
     content: "";
     display: block;
     width: 2px;
-    height: 120%;
+    height: 8px;
     top: 50%;
     transform: translateY(-50%);
     left: ${({ $value }) => `${$value}%`};
