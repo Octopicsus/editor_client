@@ -16,6 +16,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  margin: 0;
+}
+
 html,
 body,
 #root {

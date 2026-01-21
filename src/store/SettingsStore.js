@@ -110,7 +110,7 @@ class SettingsStore {
 
   isDefaultValues() {
     const arrState = Object.keys(this.valuesById).every(
-      (id) => this.valuesById[id] === this.defaultValueById[id]
+      (id) => this.valuesById[id] === this.defaultValueById[id],
     )
     return arrState
   }
@@ -126,7 +126,6 @@ class SettingsStore {
     }
   }
 
-  //
   //
   //  ROUTES
 
@@ -174,6 +173,7 @@ class SettingsStore {
     if (cached) {
       runInAction(() => {
         this.settings = cached
+
         this.preloadCache(cached)
       })
       return
@@ -181,11 +181,12 @@ class SettingsStore {
 
     try {
       const { data } = await axios.get(
-        `http://${window.location.hostname}:${API_PORT}/api/settings`
+        `http://${window.location.hostname}:${API_PORT}/api/settings`,
       )
 
       runInAction(() => {
         this.settings = data
+
         this.setCache("settings", data)
       })
     } catch (error) {
@@ -217,7 +218,7 @@ class SettingsStore {
     try {
       const { data } = await axios.get(
         `http://${window.location.hostname}:${API_PORT}/api/settings/values`,
-        { params: { id } }
+        { params: { id } },
       )
 
       runInAction(() => {
@@ -245,7 +246,7 @@ class SettingsStore {
     try {
       const { data } = await axios.post(
         `http://${window.location.hostname}:${API_PORT}/api/settings/values`,
-        { id, value }
+        { id, value },
       )
 
       runInAction(() => {
@@ -262,7 +263,7 @@ class SettingsStore {
   async resetAll() {
     try {
       const { data } = await axios.post(
-        `http://${window.location.hostname}:${API_PORT}/api/settings/reset`
+        `http://${window.location.hostname}:${API_PORT}/api/settings/reset`,
       )
 
       runInAction(() => {
