@@ -93,6 +93,19 @@ class SettingsStore {
     const url = `http://${window.location.hostname}:${API_PORT}/api/settings/stream`
     this.eventSource = new EventSource(url)
 
+    // this.eventSource.onopen = () => {
+    //   console.log("SSE: Connection opened")
+    // }
+
+    // this.eventSource.onerror = (error) => {
+    //   console.log("SSE: Error, reconnecting in 3s...", error)
+    //   this.eventSource.close()
+
+    //   setTimeout(() => {
+    //     this.connectSSE()
+    //   }, 3000)
+    // }
+
     this.eventSource.addEventListener("settings-updated", (event) => {
       const data = JSON.parse(event.data)
 
@@ -138,7 +151,6 @@ class SettingsStore {
       runInAction(() => {
         this.settings = cached
       })
-      return
     }
 
     try {
