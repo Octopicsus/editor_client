@@ -118,6 +118,15 @@ class SettingsStore {
         this.setCache("settings", this.settings)
       })
     })
+
+    this.eventSource.addEventListener("settings-list-updated", (event) => {
+      const updatedList = JSON.parse(event.data)
+
+      runInAction(() => {
+        this.settings = updatedList
+        this.setCache("settings", updatedList)
+      })
+    })
   }
 
   // -------------- LOAD LIST ---------------------------
