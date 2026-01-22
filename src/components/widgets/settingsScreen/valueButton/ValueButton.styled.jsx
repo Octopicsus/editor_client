@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import "../../styles/colors.css";
+import "../../../styles/colors.css";
 
 export const Button = styled.button`
   background-color: rgba(101, 101, 101, 0);

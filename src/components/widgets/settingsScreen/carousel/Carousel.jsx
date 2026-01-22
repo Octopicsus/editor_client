@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite"
 import { useEffect } from "react"
-import { selectedStore } from "../../../store/selectedStore"
-import { settingsStore } from "../../../store/settingsStore"
+import { selectedStore } from "../../../../store/selectedStore"
+import { settingsStore } from "../../../../store/settingsStore"
 import {
   Container,
   TitleValue,

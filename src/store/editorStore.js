@@ -40,7 +40,7 @@ class EditorStore {
   clearFormRefs(refs) {
     refs.typeRef.current.value = "gauge"
     refs.titleRef.current.value = ""
-    refs.valueRef.current.value = ""
+    // refs.valueRef.current.value = ""
     refs.defaultValueRef.current.value = ""
     refs.actionRef.current.value = ""
   }

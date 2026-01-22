@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import "../../styles/colors.css"
+import "../../../styles/colors.css"
 
 export const Bar = styled.div`
   width: ${({ $size }) => `${$size}px`};

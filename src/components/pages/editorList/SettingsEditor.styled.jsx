@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import "../../styles/colors.css"
 
-export const ItemEditor = styled.div`
+export const ItemEditorContainer = styled.div`
 display: flex;
 flex-direction: column;
 `

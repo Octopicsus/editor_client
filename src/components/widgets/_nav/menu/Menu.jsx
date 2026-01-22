@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom"
-import { settingsStore } from "../../../store/SettingsStore"
+import { settingsStore } from "../../../../store/settingsStore.js"
 import { NavWrapper, Button } from "./Menu.styled"
 import { observer } from "mobx-react-lite"
 
