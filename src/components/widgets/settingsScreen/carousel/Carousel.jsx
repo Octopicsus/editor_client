@@ -16,9 +16,10 @@ export default observer(function Carousel({ id, index }) {
   const mainHeight = 68
   const isSelected = selectedStore.selected === index
 
-  const currentValue = settingsStore.getCurrentValue(id)
-  const options = settingsStore.getOptions(id)
-  const maxCount = settingsStore.getMaxCount(id)
+  const item = settingsStore.getItem(id)
+  const currentValue = item.value
+  const options = item.options ?? []
+  const maxCount = options.length - 1 
 
   useEffect(() => {
     settingsStore.getValues(id)
@@ -30,7 +31,7 @@ export default observer(function Carousel({ id, index }) {
   }
 
   const postAfterChange = async (id) => {
-    await settingsStore.postValues(id, settingsStore.getCurrentValue(id))
+    await settingsStore.postValues(id, settingsStore.getItem(id).value)
   }
 
   const handleIncrement = async () => {
@@ -54,8 +55,7 @@ export default observer(function Carousel({ id, index }) {
         onClick={handleDecrement}
         disabled={settingsStore.disabledButton(
           currentValue,
-          maxCount,
-          "decrement"
+          "decrement",
         )}
         $isSelected={isSelected}
       >
@@ -81,8 +81,8 @@ export default observer(function Carousel({ id, index }) {
         onClick={handleIncrement}
         disabled={settingsStore.disabledButton(
           currentValue,
-          maxCount,
-          "increment"
+          "increment",
+          maxCount
         )}
         $isSelected={isSelected}
       >

@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite"
 import { selectedStore } from "../../../../store/selectedStore"
-import { settingsStore } from "../../../../store/SettingsStore"
+import { settingsStore } from "../../../../store/settingsStore.js"
 import { ProgressContainer, Bar, Container, TitleValue } from "./Gauge.styled"
 import { Button } from "../valueButton/ValueButton.styled"
 import { useEffect, useState } from "react"
@@ -12,7 +12,10 @@ export default observer(function Gauge({ id, index }) {
 
   const [isDragging, setIsDragging] = useState(false)
   const isSelected = selectedStore.selected === index
-  const currentValue = settingsStore.getCurrentValue(id)
+
+
+  const item = settingsStore.getItem(id)
+  const currentValue = item.value
 
   useEffect(() => {
     settingsStore.getValues(id)
@@ -36,7 +39,7 @@ export default observer(function Gauge({ id, index }) {
       event.currentTarget.releasePointerCapture(event.pointerId)
     }
     setIsDragging(false)
-    settingsStore.postValues(id, settingsStore.getCurrentValue(id))
+    settingsStore.postValues(id, settingsStore.getItem(id).value)
   }
 
   const setCountbyPointer = (event) => {
@@ -48,7 +51,7 @@ export default observer(function Gauge({ id, index }) {
   }
 
   const postAfterChange = async (id) => {
-    await settingsStore.postValues(id, settingsStore.getCurrentValue(id))
+    await settingsStore.postValues(id, settingsStore.getItem(id).value)
   }
 
   const handleIncrement = async () => {

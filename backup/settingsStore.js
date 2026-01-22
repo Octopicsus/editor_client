@@ -3,7 +3,13 @@ import axios from "axios"
 import { API_PORT } from "../../config/port"
 
 class SettingsStore {
+  keyTitle = `id-`
   settings = []
+  typeById = {}
+  valuesById = {}
+  defaultValueById = {}
+  optionsById = {}
+  maxCountById = {}
   eventSource = null
 
   constructor() {
@@ -27,58 +33,94 @@ class SettingsStore {
     sessionStorage.removeItem(key)
   }
 
+  preloadCache(data) {
+    data.forEach((widget) => {
+      const cached = this.getCache(`${this.keyTitle}${widget.id}`)
+
+      if (cached) {
+        this.typeById[widget.id] = cached.type
+        this.defaultValueById[widget.id] = cached.defaultValue
+        this.valuesById[widget.id] = cached.value
+
+        if (cached.type === "carousel") {
+          this.optionsById[widget.id] = cached.options
+          this.maxCountById[widget.id] = cached.options.length - 1
+        }
+      }
+    })
+  }
+
   // ----------------  Get Varibales
 
-  getItem(id) {
-    return this.settings.find((item) => item.id === id)
-  }
-
   getType(id) {
-    return this.getItem(id)?.type
+    return this.typeById[id]
   }
 
-  setClampValue(id, value, min = 0, max = 100) {
-    const item = this.getItem(id)
-    if (!item) return
+  getCurrentValue(id) {
+    return this.valuesById[id] ?? this.getDefaultValue(id)
+  }
+
+  getDefaultValue(id) {
+    return this.defaultValueById[id] ?? 0
+  }
+
+  getOptions(id) {
+    return this.optionsById[id] ?? []
+  }
+
+  maxCount(id) {
+    return this.maxCountById[id] ?? 0
+  }
+
+  getMaxCount(id) {
+    if (this.getType(id) === "carousel") {
+      return this.maxCount(id)
+    } else {
+      return 100
+    }
+  }
+
+  setClampValue(id, value, min = 0, max = this.getMaxCount(id)) {
     const clamped = Math.min(Math.max(Number(value), min), max)
-    item.value = clamped
+    this.valuesById[id] = clamped
     return clamped
   }
 
   // ----------------  Actions
 
   canIncrement(id) {
-    const item = this.getItem(id)
-    const maxCount = item?.type === "carousel" ? item?.options?.length - 1 : 100
-    return item?.value < maxCount
+    return this.getCurrentValue(id) < this.getMaxCount(id)
   }
 
   canDecrement(id) {
-    return this.getItem(id)?.value > 0
+    return this.getCurrentValue(id) > 0
   }
 
   increment(id) {
     if (this.canIncrement(id)) {
-      this.setClampValue(id, this.getItem(id).value + 1)
+      this.setClampValue(id, this.getCurrentValue(id) + 1)
     }
   }
 
   decrement(id) {
     if (this.canDecrement(id)) {
-      this.setClampValue(id, this.getItem(id).value - 1)
+      this.setClampValue(id, this.getCurrentValue(id) - 1)
     }
   }
 
   isDefaultValues() {
-    return this.settings.every((item) => item.value === item.defaultValue)
+    const arrState = Object.keys(this.valuesById).every(
+      (id) => this.valuesById[id] === this.defaultValueById[id],
+    )
+    return arrState
   }
 
-  disabledButton = (value, side, max = 100) => {
+  disabledButton = (value, side) => {
     switch (side) {
       case "decrement":
         return value === 0
       case "increment":
-        return value >= max
+        return value === 100
       default:
         return false
     }
@@ -97,11 +139,17 @@ class SettingsStore {
       const data = JSON.parse(event.data)
 
       runInAction(() => {
-        const item = this.getItem(data.id)
-        if (item) {
-          item.value = data.value
-          this.setCache("settings", this.settings)
+        const key = `${this.keyTitle}${data.id}`
+        const itemData = {
+          id: data.id,
+          type: this.typeById[data.id],
+          defaultValue: this.defaultValueById[data.id],
+          value: data.value,
+          options: this.optionsById[data.id] || [],
         }
+        this.setCache(key, itemData)
+
+        this.setClampValue(data.id, data.value)
       })
     })
 
@@ -109,13 +157,10 @@ class SettingsStore {
       const data = JSON.parse(event.data)
 
       runInAction(() => {
-        data.forEach((resetItem) => {
-          const item = this.getItem(resetItem.id)
-          if (item) {
-            item.value = resetItem.value
-          }
+        data.forEach((item) => {
+          this.setCache(`${this.keyTitle}${item.id}`, item)
+          this.valuesById[item.id] = item.value
         })
-        this.setCache("settings", this.settings)
       })
     })
   }
@@ -128,6 +173,8 @@ class SettingsStore {
     if (cached) {
       runInAction(() => {
         this.settings = cached
+
+        this.preloadCache(cached)
       })
       return
     }
@@ -139,6 +186,7 @@ class SettingsStore {
 
       runInAction(() => {
         this.settings = data
+
         this.setCache("settings", data)
       })
     } catch (error) {
@@ -149,15 +197,20 @@ class SettingsStore {
   //  -------------- GET ------------------------------
 
   async getValues(id) {
-    const cached = this.getCache("settings")
+    const key = `${this.keyTitle}${id}`
+    const cached = this.getCache(key)
 
     if (cached) {
       runInAction(() => {
-        const item = this.getItem(id)
-        const cachedItem = cached.find((i) => i.id === id)
-        if (item && cachedItem) {
-          item.value = cachedItem.value
+        this.typeById[id] = cached.type
+        this.defaultValueById[id] = cached.defaultValue
+
+        if (cached.type === "carousel") {
+          this.optionsById[id] = cached.options
+          this.maxCountById[id] = cached.options.length - 1
         }
+
+        this.setClampValue(id, cached.value)
       })
       return
     }
@@ -169,11 +222,16 @@ class SettingsStore {
       )
 
       runInAction(() => {
-        const item = this.getItem(id)
-        if (item) {
-          item.value = data.value
-          this.setCache("settings", this.settings)
+        this.typeById[id] = data.type
+        this.defaultValueById[id] = data.defaultValue
+
+        if (data.type === "carousel") {
+          this.optionsById[id] = data.options
+          this.maxCountById[id] = data.options.length - 1
         }
+
+        this.setClampValue(id, data.value)
+        this.setCache(key, data)
       })
     } catch (error) {
       console.error("Loading Error", error)
@@ -183,6 +241,8 @@ class SettingsStore {
   //  -------------- POST ------------------------------
 
   async postValues(id, value) {
+    const key = `${this.keyTitle}${id}`
+
     try {
       const { data } = await axios.post(
         `http://${window.location.hostname}:${API_PORT}/api/settings/values`,
@@ -190,11 +250,8 @@ class SettingsStore {
       )
 
       runInAction(() => {
-        const item = this.getItem(id)
-        if (item) {
-          item.value = data.value
-          this.setCache("settings", this.settings)
-        }
+        this.setClampValue(id, data.value)
+        this.setCache(key, data)
       })
     } catch (error) {
       console.error("Sync Data error", error)
@@ -210,8 +267,12 @@ class SettingsStore {
       )
 
       runInAction(() => {
-        this.settings = data
-        this.setCache("settings", data)
+        data.forEach((item) => {
+          this.valuesById[item.id] = item.value
+          this.setCache(`${this.keyTitle}${item.id}`, item)
+          this.clearCahce(`${this.keyTitle}${item.id}`)
+          this.clearCahce("settings")
+        })
       })
     } catch (error) {
       console.error("Reset Error", error)
