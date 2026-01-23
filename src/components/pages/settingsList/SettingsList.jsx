@@ -6,9 +6,11 @@ import Carousel from "../../widgets/settingsScreen/carousel/Carousel"
 import { Item, TitleItem, ListWrapper } from "./SettingsList.styled"
 
 export default observer(function SettingsList() {
+const settingsList = settingsStore.settings
+
   return (
     <ListWrapper>
-      {settingsStore.settings.map((widget, index) => (
+      {settingsList.map((widget, index) => (
         <Item
           key={widget.id}
           $isSelected={selectedStore.selected === index}

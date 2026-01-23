@@ -34,12 +34,11 @@ class SettingsStore {
   }
 
   getType(id) {
-    return this.getItem(id)?.type
+    return this.getItem(id).type
   }
 
   setClampValue(id, value, min = 0, max = 100) {
     const item = this.getItem(id)
-    if (!item) return
     const clamped = Math.min(Math.max(Number(value), min), max)
     item.value = clamped
     return clamped
@@ -49,12 +48,12 @@ class SettingsStore {
 
   canIncrement(id) {
     const item = this.getItem(id)
-    const maxCount = item?.type === "carousel" ? item?.options?.length - 1 : 100
-    return item?.value < maxCount
+    const maxCount = item.type === "carousel" ? item.options.length - 1 : 100
+    return item.value < maxCount
   }
 
   canDecrement(id) {
-    return this.getItem(id)?.value > 0
+    return this.getItem(id).value > 0
   }
 
   increment(id) {
@@ -92,19 +91,6 @@ class SettingsStore {
   connectSSE() {
     const url = `http://${window.location.hostname}:${API_PORT}/api/settings/stream`
     this.eventSource = new EventSource(url)
-
-    // this.eventSource.onopen = () => {
-    //   console.log("SSE: Connection opened")
-    // }
-
-    // this.eventSource.onerror = (error) => {
-    //   console.log("SSE: Error, reconnecting in 3s...", error)
-    //   this.eventSource.close()
-
-    //   setTimeout(() => {
-    //     this.connectSSE()
-    //   }, 3000)
-    // }
 
     this.eventSource.addEventListener("settings-updated", (event) => {
       const data = JSON.parse(event.data)

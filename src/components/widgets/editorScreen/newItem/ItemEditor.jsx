@@ -2,6 +2,9 @@ import { observer } from "mobx-react-lite"
 import { editorStore } from "../../../../store/editorStore"
 import {
   ItemEditorContainer,
+  ShowComponentButton,
+  ButtonWrapper,
+  ButtonCancel,
   ButtonAdd,
   TitleInput,
   TypeInput,
@@ -25,6 +28,11 @@ export default observer(function ItemEditor() {
   const actionRef = useRef(null)
 
   const [type, setType] = useState("gauge")
+  const [showWidget, setShowWidget] = useState(false)
+
+  const openComponent = () => {
+    setShowWidget(true)
+  }
 
   const handleAddClick = () => {
     const data = {
@@ -48,6 +56,18 @@ export default observer(function ItemEditor() {
 
     setOptions([])
     setType("gauge")
+    setShowWidget(false)
+  }
+
+  const handleCancelClick = () => {
+    editorStore.clearFormRefs({
+      typeRef,
+      titleRef,
+      defaultValueRef,
+      actionRef,
+    })
+
+    setShowWidget(false)
   }
 
   const updateOption = (id, itemObj) => {
@@ -75,43 +95,55 @@ export default observer(function ItemEditor() {
   }
 
   return (
-    <ItemEditorContainer>
-      <TypeInput
-        ref={typeRef}
-        value={type}
-        onChange={(event) => setType(event.target.value)}
-      >
-        <TypeOption value="gauge">gauge</TypeOption>
-        <TypeOption value="carousel">carousel</TypeOption>
-      </TypeInput>
-
-      <TitleInput type="text" placeholder="Title" ref={titleRef} />
- 
-      <DefaultInput
-        type="number"
-        placeholder="Default Value"
-        ref={defaultValueRef}
-      />
-      {type === "carousel" && (
-        <OptionList>
-          <OptionSubWrapper>
-            <OptionsTitle>Options</OptionsTitle>
-            <ButtonAddStep onClick={addOption}>Add Option</ButtonAddStep>
-          </OptionSubWrapper>
-          {options.map((option, index) => (
-            <CarouselOptionItem
-              key={option.id}
-              index={index}
-              option={option}
-              onUpdate={(updates) => updateOption(option.id, updates)}
-              onDelete={() => deleteOption(option.id)}
-            />
-          ))}
-        </OptionList>
+    <div>
+      {!showWidget && (
+        <ShowComponentButton onClick={openComponent}>
+          Create new
+        </ShowComponentButton>
       )}
-      <ActionInput type="text" placeholder="Action" ref={actionRef} />
 
-      <ButtonAdd onClick={handleAddClick}>Add</ButtonAdd>
-    </ItemEditorContainer>
+      {showWidget && (
+        <ItemEditorContainer>
+          <TypeInput
+            ref={typeRef}
+            value={type}
+            onChange={(event) => setType(event.target.value)}
+          >
+            <TypeOption value="gauge">gauge</TypeOption>
+            <TypeOption value="carousel">carousel</TypeOption>
+          </TypeInput>
+
+          <TitleInput type="text" placeholder="Title" ref={titleRef} />
+
+          <DefaultInput
+            type="number"
+            placeholder="Default Value"
+            ref={defaultValueRef}
+          />
+          {type === "carousel" && (
+            <OptionList>
+              <OptionSubWrapper>
+                <OptionsTitle>Options</OptionsTitle>
+                <ButtonAddStep onClick={addOption}>Add Option</ButtonAddStep>
+              </OptionSubWrapper>
+              {options.map((option, index) => (
+                <CarouselOptionItem
+                  key={option.id}
+                  index={index}
+                  option={option}
+                  onUpdate={(updates) => updateOption(option.id, updates)}
+                  onDelete={() => deleteOption(option.id)}
+                />
+              ))}
+            </OptionList>
+          )}
+          <ActionInput type="text" placeholder="Action" ref={actionRef} />
+          <ButtonWrapper>
+            <ButtonCancel onClick={handleCancelClick}>Cancel</ButtonCancel>
+            <ButtonAdd onClick={handleAddClick}>Add</ButtonAdd>
+          </ButtonWrapper>
+        </ItemEditorContainer>
+      )}
+    </div>
   )
 })

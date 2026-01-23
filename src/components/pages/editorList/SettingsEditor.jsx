@@ -1,19 +1,15 @@
 import { observer } from "mobx-react-lite"
-import { editorStore } from "../../../store/editorStore"
+
 import ItemEditor from "../../widgets/editorScreen/newItem/ItemEditor"
-import { settingsStore } from "../../../store/settingsStore"
+
+import ListItems from "../../widgets/editorScreen/listItems/ListItems"
+import { Screen } from "./SettingsEditor.styled"
 
 export default observer(function SettingsEditor() {
-  const totalClean = () => {
-    editorStore.cleanStorage()
-    editorStore.cleanDB()
-    settingsStore.loadSettings()
-  }
   return (
-    <div>
-
+    <Screen>
+      <ListItems />
       <ItemEditor />
-      <button onClick={totalClean}>clean</button>
-    </div>
+    </Screen>
   )
 })

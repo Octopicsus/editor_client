@@ -11,6 +11,5 @@ export const Root = styled.div`
   align-items: center;
   margin: 0 auto;
   text-align: center;
+  user-select: none;
 `
-
-

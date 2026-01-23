@@ -1,7 +1,8 @@
+import { observer } from "mobx-react-lite"
 import { useLocation, useNavigate } from "react-router-dom"
 import { settingsStore } from "../../../../store/settingsStore.js"
+import { editorStore } from "../../../../store/editorStore.js"
 import { NavWrapper, Button } from "./Menu.styled"
-import { observer } from "mobx-react-lite"
 
 function Menu() {
   const navigate = useNavigate()
@@ -19,8 +20,16 @@ function Menu() {
     await settingsStore.resetAll()
   }
 
+  const totalClean = () => {
+    editorStore.cleanStorage()
+    editorStore.cleanDB()
+    settingsStore.loadSettings()
+    editorStore.loadSettings()
+  }
+
   return (
     <NavWrapper>
+      <Button onClick={totalClean}>clean</Button>
       <Button onClick={reset} $isDefault={settingsStore.isDefaultValues()}>
         reset
       </Button>

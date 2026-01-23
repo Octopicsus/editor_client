@@ -1,10 +1,13 @@
 import styled from "styled-components"
 import "../../../styles/colors.css"
 
+export const ShowComponentButton = styled.button``
+
 export const ItemEditorContainer = styled.div`
   display: flex;
   flex-direction: column;
 `
+
 
 export const TypeInput = styled.select``
 
@@ -29,4 +32,17 @@ export const ButtonAddStep = styled.button``
 
 export const ActionInput = styled.input``
 
-export const ButtonAdd = styled.button``
+export const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`
+
+export const ButtonCancel = styled.button`
+opacity: 50%;
+  width: 40%;
+`
+
+export const ButtonAdd = styled.button`
+  width: 60%;
+`

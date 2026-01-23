@@ -13,6 +13,7 @@ class EditorStore {
 
   settings = []
   formData = {}
+  eventSource = null
 
   constructor() {
     makeAutoObservable(this)
@@ -40,13 +41,19 @@ class EditorStore {
   clearFormRefs(refs) {
     refs.typeRef.current.value = "gauge"
     refs.titleRef.current.value = ""
-    // refs.valueRef.current.value = ""
     refs.defaultValueRef.current.value = ""
     refs.actionRef.current.value = ""
   }
 
   //
   //  ROUTES
+
+  // -------------- SSE ---------------------------
+
+  connectSEE() {
+    const url = `http://${window.location.hostname}:${API_PORT}/api/settings/stream`
+    this.eventSource = new EventSource(url)
+  }
 
   // -------------- LOAD LIST ---------------------------
 
